@@ -1,8 +1,11 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 app.use(express.json())
 const cors = require('cors')
 app.use(cors())
+
+const Note = require('./models/note')
 
 const generateId = () => {
     const maxId = notes.length > 0
@@ -64,10 +67,11 @@ let notes = [
     response.status(204).end()
   })
 
-  app.get('/api/notes', (request, response) => {
+app.get('/api/notes', (request, response) => {
+  Note.find({}).then(notes => {
     response.json(notes)
   })
-  
+})
 
   app.post('/api/notes', (request, response) => {
     const body = request.body
